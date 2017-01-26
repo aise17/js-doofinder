@@ -31,6 +31,21 @@
       height: 400px;
       overflow: auto;
     }
+
+    #suggestions ul{
+      list-style: none;
+      padding-left: 0;
+    }
+
+    #suggestions ul li{
+      padding: .5rem .5rem;
+      border-bottom: 1px solid #ccc;
+    }
+    #suggestions ul li.selected{
+      padding: .5rem .5rem;
+      border-bottom: 1px solid #ccc;
+      background-color: #ccc;
+    }
   </style>
 
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -52,6 +67,8 @@
         templateVars: {label: 'Brand'}
       });
 
+      suggestionsWidget = new doofinder.widgets.SuggestionsList('#suggestions');
+
       priceWidget.bind('df:rendered', function(res){
         console.log(res);
       });
@@ -61,8 +78,11 @@
         resultsWidget,
         priceWidget,
         priceWidget2,
-        brandWidget
+        brandWidget,
+        suggestionsWidget
       ]);
+
+      suggestionsWidget.start();
 
       dfdom = doofinder.util.dfdom;
 
@@ -76,10 +96,12 @@
 </head>
 <body>
   <input class="w m q" type="text" id="query" autofocus>
+  <div class= "w m b" id="suggestions"></div>
   <div class="w m b s" id="scroll"></div>
   <div class="w m b" id="price"></div>
   <div class="w m b" id="price2"></div>
   <div class="w m b" id="brand"></div>
+  
   <input id="test" />
 </body>
 </html>

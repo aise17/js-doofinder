@@ -5,6 +5,7 @@
 bean = require "bean"
 extend = require "extend"
 qs = require "qs"
+QueryInput = require "./widgets/queryinput"
 
 ###
 Controller

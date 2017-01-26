@@ -16,6 +16,7 @@ module.exports =
     QueryInput: require "./widgets/queryinput"
     TermFacet: require "./widgets/facets/termfacet"
     RangeFacet: require "./widgets/facets/rangefacet"
+    SuggestionsList: require "./widgets/suggestions/list"
   util:
     md5: require "md5"
     qs: require "qs"

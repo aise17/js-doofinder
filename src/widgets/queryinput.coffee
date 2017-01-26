@@ -47,6 +47,10 @@ class QueryInput extends Widget
     else
       @controller = [controller]
 
+    # Assigns the ctrl property
+    for ctrl in @controller
+      ctrl.queryInputWidget = this
+    
     self = this
 
     # Bind events only once
