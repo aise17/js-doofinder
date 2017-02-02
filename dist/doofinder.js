@@ -398,7 +398,7 @@ author: @ecoslado
       path = "/" + this.version + "/stats/checkout?hashid=" + this.hashid + "&session_id=" + sessionId;
       path += "&random=" + (new Date().getTime());
       reqOpts = this.__requestOptions(path);
-      return this.httpClient.request(options, callback);
+      return this.httpClient.request(reqOpts, callback);
     };
 
 
@@ -2989,8 +2989,7 @@ bottom
           if (idx >= self.totalSuggestions) {
             results = [];
             for (k = i = ref = idx, ref1 = res.results.length - 1; ref <= ref1 ? i <= ref1 : i >= ref1; k = ref <= ref1 ? ++i : --i) {
-              res.results.splice(idx, 1);
-              results.push(console.log(res.results));
+              results.push(res.results.splice(idx, 1));
             }
             return results;
           }
