@@ -2967,13 +2967,12 @@ bottom
     List.prototype.init = function(controller) {
       var self;
       this.controller = controller;
+      console.log("Hello");
       self = this;
-      this.autocomplete = this.create_autocomplete([]);
+      this.autocomplete = this.create_autocomplete(['Java', 'JavaScript', 'Javero']);
+      console.log(autoComplete);
       return this.controller.bind("df:results_received", function(res) {
-        if (self.autocomplete) {
-          self.autocomplete.destroy();
-        }
-        return self.create_autocomplete(['Java', 'JavaScript', 'Javero']);
+        return console.log(self.autocomplete);
       });
     };
 
@@ -2982,15 +2981,10 @@ bottom
         selector: "#query-input",
         minChars: 1,
         source: function(term, suggest) {
-          var choice, i, len, suggestions;
           term = term.toLowerCase();
-          choices = [];
-          suggestions = [];
-          for (i = 0, len = choices.length; i < len; i++) {
-            choice = choices[i];
-            (choice.toLowerCase().indexOf(term) > -1 ? suggestions.push(choice) : void 0)();
-          }
-          return suggest(suggestions);
+          suggest(choices);
+          console.log(choices);
+          return console.log(suggestions);
         }
       });
     };
