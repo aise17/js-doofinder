@@ -2971,16 +2971,13 @@ bottom
       this.last_result = [];
       self = this;
       this.controller.bind('df:results_received', function(res) {
-        console.log('Put waiting to false: results_received');
         self.last_result = self.get_suggestions(res);
         return self.waiting_response = false;
       });
       this.controller.bind('df:error_received', function() {
-        console.log('Put waiting to false: Error received');
         return self.waiting_response = false;
       });
       this.controller.bind('df:search', function() {
-        console.log('Put waiting to true: search');
         return self.waiting_response = true;
       });
       return this.autocomplete = new autoComplete({
@@ -2988,20 +2985,15 @@ bottom
         minChars: 3,
         source: function(term, suggest) {
           var wait;
-          console.log('Waiting response');
           if (self.waiting_response === false) {
-            console.log('No waiting');
             return suggest(self.last_result);
           } else {
             wait = function() {
-              console.log('Waiting...');
               if (!self.waiting_response) {
-                console.log('Waiting in timeout');
                 return setTimeout(function() {
                   return wait(500);
                 });
               } else {
-                console.log(self.last_result);
                 return suggest(self.last_result);
               }
             };
