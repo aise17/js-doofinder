@@ -13,7 +13,7 @@
     "mustache": "^2.2.1",
     "nouislider": "^8.5.1",
     "qs": "^4.0.0",
-    "doof-autocomplete": "abellosovic/JavaScript-autoComplete#ab1aba6330d2abbb22175f917662f20d8aacd9b1"
+    "doof-autocomplete": "abellosovic/JavaScript-autoComplete#f7650e346185a2217c7b14d57f975ad310b6176d"
   },
   "devDependencies": {
     "chai": "^2.2.0",

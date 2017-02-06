@@ -2967,24 +2967,47 @@ bottom
     List.prototype.init = function(controller) {
       var self;
       this.controller = controller;
-      console.log("Hello");
+      window.waiting_response = false;
+      window.last_result = [];
       self = this;
-      this.autocomplete = this.create_autocomplete(['Java', 'JavaScript', 'Javero']);
-      console.log(autoComplete);
-      return this.controller.bind("df:results_received", function(res) {
-        return console.log(self.autocomplete);
+      this.controller.bind('df:results_received', function(res) {
+        console.log('Put waiting to false: results_received');
+        window.last_result = res.results.map(function(element) {
+          return element.title;
+        });
+        return window.waiting_response = false;
       });
-    };
-
-    List.prototype.create_autocomplete = function(choices) {
-      return new autoComplete({
+      this.controller.bind('df:error_received', function() {
+        console.log('Put waiting to false: Error received');
+        return window.waiting_response = false;
+      });
+      this.controller.bind('df:search', function() {
+        console.log('Put waiting to true: search');
+        return window.waiting_response = true;
+      });
+      return this.autocomplete = new autoComplete({
         selector: "#query-input",
         minChars: 1,
         source: function(term, suggest) {
-          term = term.toLowerCase();
-          suggest(choices);
-          console.log(choices);
-          return console.log(suggestions);
+          var wait;
+          console.log('Waiting response');
+          if (window.waiting_response === false) {
+            console.log('No waiting');
+            return suggest(window.last_result);
+          } else {
+            return wait = function() {
+              console.log('Waiting...');
+              if (!window.waiting_response) {
+                console.log('Waiting in timeout');
+                return setTimeout(function() {
+                  return wait(500);
+                });
+              } else {
+                console.log(window.last_result);
+                return suggest(window.last_result);
+              }
+            };
+          }
         }
       });
     };
@@ -3908,14 +3931,6 @@ module.exports = (function(){
                         if (val != that.last_val) {
                             that.last_val = val;
                             clearTimeout(that.timer);
-                            if (o.cache) {
-                                if (val in that.cache) { suggest(that.cache[val]); return; }
-                                // no requests if previous suggestions were empty
-                                for (var i=1; i<val.length-o.minChars; i++) {
-                                    var part = val.slice(0, val.length-i);
-                                    if (part in that.cache && !that.cache[part].length) { suggest([]); return; }
-                                }
-                            }
                             that.timer = setTimeout(function(){ o.source(val, suggest) }, o.delay);
                         }
                     } else {
