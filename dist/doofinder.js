@@ -2967,48 +2967,53 @@ bottom
     List.prototype.init = function(controller) {
       var self;
       this.controller = controller;
-      window.waiting_response = false;
-      window.last_result = [];
+      this.waiting_response = false;
+      this.last_result = [];
       self = this;
       this.controller.bind('df:results_received', function(res) {
         console.log('Put waiting to false: results_received');
-        window.last_result = res.results.map(function(element) {
-          return element.title;
-        });
-        return window.waiting_response = false;
+        self.last_result = self.get_suggestions(res);
+        return self.waiting_response = false;
       });
       this.controller.bind('df:error_received', function() {
         console.log('Put waiting to false: Error received');
-        return window.waiting_response = false;
+        return self.waiting_response = false;
       });
       this.controller.bind('df:search', function() {
         console.log('Put waiting to true: search');
-        return window.waiting_response = true;
+        return self.waiting_response = true;
       });
       return this.autocomplete = new autoComplete({
         selector: "#query-input",
-        minChars: 1,
+        minChars: 3,
         source: function(term, suggest) {
           var wait;
           console.log('Waiting response');
-          if (window.waiting_response === false) {
+          if (self.waiting_response === false) {
             console.log('No waiting');
-            return suggest(window.last_result);
+            return suggest(self.last_result);
           } else {
-            return wait = function() {
+            wait = function() {
               console.log('Waiting...');
-              if (!window.waiting_response) {
+              if (!self.waiting_response) {
                 console.log('Waiting in timeout');
                 return setTimeout(function() {
                   return wait(500);
                 });
               } else {
-                console.log(window.last_result);
-                return suggest(window.last_result);
+                console.log(self.last_result);
+                return suggest(self.last_result);
               }
             };
+            return wait();
           }
         }
+      });
+    };
+
+    List.prototype.get_suggestions = function(res) {
+      return res.results.map(function(element) {
+        return element.title;
       });
     };
 

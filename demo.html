@@ -1,0 +1,35 @@
+<html lang="en">
+<head>
+    <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="application/javascript" src="dist/doofinder.js"></script>
+    <script>
+        (function(doofinder, document){
+            $(document).ready(function(){
+                // Use here your Search Engine hashid and doofinder zone
+                var client = new doofinder.Client('2015246697883cea31e5f486d6a0fbb3', 'eu1');
+                // #query is the DOM selector that points to the search box
+                var queryInputWidget = new doofinder.widgets.QueryInput('#query-input');
+                // #scroll is where we'll display the results
+                var resultsWidget = new doofinder.widgets.ScrollResults('#scroll');
+                // The controller to rule them all
+                var resultsSuggestions = new doofinder.widgets.SuggestionsList('#query-input');
+                var controller = new doofinder.Controller(
+                    client,
+                    [queryInputWidget, resultsWidget, resultsSuggestions]
+                );
+            });
+        })(doofinder, document);
+    </script>
+    <style>
+        #scroll{
+            position: relative;
+            height: 10px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+<input type="text" id="query-input"/>
+<div id="suggestions"></div>
+<div id="scroll"></div>
+</body>
