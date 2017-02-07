@@ -26,7 +26,7 @@ class List extends Display
 
     @autocomplete = new autoComplete({
       selector: "#query-input",
-      minChars: 3,
+      minChars: 2,
       source: (term, suggest) ->
         if self.waiting_response == false
           suggest(self.last_result);
@@ -40,7 +40,7 @@ class List extends Display
     });
 
   get_suggestions: (res) ->
-    return res.results.map((element) -> return element.title)
+    return res.results.map((element) -> return element.title).slice(0,2)
 
 module.exports = List
 

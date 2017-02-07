@@ -2982,7 +2982,7 @@ bottom
       });
       return this.autocomplete = new autoComplete({
         selector: "#query-input",
-        minChars: 3,
+        minChars: 2,
         source: function(term, suggest) {
           var wait;
           if (self.waiting_response === false) {
@@ -3006,7 +3006,7 @@ bottom
     List.prototype.get_suggestions = function(res) {
       return res.results.map(function(element) {
         return element.title;
-      });
+      }).slice(0, 2);
     };
 
     return List;
